@@ -1,4 +1,6 @@
 using EKostApi.Data;
+using EKostApi.Interface;
+using EKostApi.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,9 @@ builder.Services.AddDbContext<EkostContext>(options =>
 {
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
+
+builder.Services.AddScoped<IOwner, OwnerService>();
+builder.Services.AddScoped<IUser, UserService>();
 
 var app = builder.Build();
 

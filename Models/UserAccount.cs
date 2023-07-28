@@ -2,7 +2,7 @@
 
 namespace EKostApi.Models
 {
-    public class OwnerAccount
+    public class UserAccount
     {
         [Key]
         public string Username { get; set; } = string.Empty;

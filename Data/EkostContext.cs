@@ -7,5 +7,6 @@ namespace EKostApi.Data
     {
         public EkostContext(DbContextOptions options) : base(options) { }
         public DbSet<DetailOwner> DetailOwners { get; set; }
+        public DbSet<DetailUser> DetailUsers { get; set; }
     }
 }

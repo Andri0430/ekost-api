@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "s+tt0kuDLY+4WbVCHr8tT/5cVRolHHLQ8Q677fKvankBCOvL8Y0UeJ4a3EhidCw5isJJepex7P1unrH3mEsGtg==",
+  "dgSpecHash": "VNn5jxPNCeCCWSospGhiJP4ljlQdOmQ/h18Ie1yyE6eBwAv0WsmZX0qbEc2vM88sbgoZXjynLSPkjzx6Jyf6lg==",
   "success": true,
   "projectFilePath": "D:\\ASP API\\EKostApi\\EKostApi.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\andri\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\andri\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",
     "C:\\Users\\andri\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\andri\\.nuget\\packages\\k4os.compression.lz4\\1.3.5\\k4os.compression.lz4.1.3.5.nupkg.sha512",

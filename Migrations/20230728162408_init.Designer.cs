@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EKostApi.Migrations
 {
     [DbContext(typeof(EkostContext))]
-    [Migration("20230727173059_init")]
+    [Migration("20230728162408_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -43,6 +43,28 @@ namespace EKostApi.Migrations
                     b.ToTable("DetailOwners");
                 });
 
+            modelBuilder.Entity("EKostApi.Models.DetailUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserAccountUsername")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserAccountUsername");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DetailUsers");
+                });
+
             modelBuilder.Entity("EKostApi.Models.Owner", b =>
                 {
                     b.Property<int>("Id")
@@ -53,7 +75,7 @@ namespace EKostApi.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("OwnerName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -80,6 +102,43 @@ namespace EKostApi.Migrations
                     b.ToTable("OwnerAccount");
                 });
 
+            modelBuilder.Entity("EKostApi.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("EKostApi.Models.UserAccount", b =>
+                {
+                    b.Property<string>("Username")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Username");
+
+                    b.ToTable("UserAccount");
+                });
+
             modelBuilder.Entity("EKostApi.Models.DetailOwner", b =>
                 {
                     b.HasOne("EKostApi.Models.OwnerAccount", "OwnerAccount")
@@ -97,6 +156,25 @@ namespace EKostApi.Migrations
                     b.Navigation("Owner");
 
                     b.Navigation("OwnerAccount");
+                });
+
+            modelBuilder.Entity("EKostApi.Models.DetailUser", b =>
+                {
+                    b.HasOne("EKostApi.Models.UserAccount", "UserAccount")
+                        .WithMany()
+                        .HasForeignKey("UserAccountUsername")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EKostApi.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserAccount");
                 });
 #pragma warning restore 612, 618
         }
