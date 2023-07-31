@@ -6,5 +6,8 @@ namespace EKostApi.Interface
     {
         void RegisterUser(DetailUser detailUser);
         void UpdateUser(DetailUser detailUser);
+        UserAccount GetUserByUsername(string username);
+        User GetUserByEmail(string email);
+        User GetUserByPhoneNumber(string phone);
     }
 }

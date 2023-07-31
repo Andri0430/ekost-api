@@ -18,6 +18,30 @@ namespace EKostApi.Migrations
                 .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("EKostApi.Models.DetailKost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("KostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QtyRoom")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KostId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("DetailKosts");
+                });
+
             modelBuilder.Entity("EKostApi.Models.DetailOwner", b =>
                 {
                     b.Property<int>("Id")
@@ -62,6 +86,76 @@ namespace EKostApi.Migrations
                     b.ToTable("DetailUsers");
                 });
 
+            modelBuilder.Entity("EKostApi.Models.Kost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("KostAdressId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("KostName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("KostPrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KostTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KostAdressId");
+
+                    b.HasIndex("KostTypeId");
+
+                    b.ToTable("Kost");
+                });
+
+            modelBuilder.Entity("EKostApi.Models.KostAdress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KostAdress");
+                });
+
+            modelBuilder.Entity("EKostApi.Models.KostType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeKost")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("kostTypes");
+                });
+
             modelBuilder.Entity("EKostApi.Models.Owner", b =>
                 {
                     b.Property<int>("Id")
@@ -82,7 +176,7 @@ namespace EKostApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Owner");
+                    b.ToTable("Owners");
                 });
 
             modelBuilder.Entity("EKostApi.Models.OwnerAccount", b =>
@@ -96,7 +190,7 @@ namespace EKostApi.Migrations
 
                     b.HasKey("Username");
 
-                    b.ToTable("OwnerAccount");
+                    b.ToTable("OwnerAccounts");
                 });
 
             modelBuilder.Entity("EKostApi.Models.User", b =>
@@ -119,7 +213,7 @@ namespace EKostApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("EKostApi.Models.UserAccount", b =>
@@ -133,7 +227,26 @@ namespace EKostApi.Migrations
 
                     b.HasKey("Username");
 
-                    b.ToTable("UserAccount");
+                    b.ToTable("UserAccounts");
+                });
+
+            modelBuilder.Entity("EKostApi.Models.DetailKost", b =>
+                {
+                    b.HasOne("EKostApi.Models.Kost", "Kost")
+                        .WithMany()
+                        .HasForeignKey("KostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EKostApi.Models.Owner", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Kost");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("EKostApi.Models.DetailOwner", b =>
@@ -172,6 +285,25 @@ namespace EKostApi.Migrations
                     b.Navigation("User");
 
                     b.Navigation("UserAccount");
+                });
+
+            modelBuilder.Entity("EKostApi.Models.Kost", b =>
+                {
+                    b.HasOne("EKostApi.Models.KostAdress", "KostAdress")
+                        .WithMany()
+                        .HasForeignKey("KostAdressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EKostApi.Models.KostType", "KostType")
+                        .WithMany()
+                        .HasForeignKey("KostTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KostAdress");
+
+                    b.Navigation("KostType");
                 });
 #pragma warning restore 612, 618
         }

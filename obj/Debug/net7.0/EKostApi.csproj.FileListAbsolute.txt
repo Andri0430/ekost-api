@@ -64,3 +64,9 @@ D:\ASP API\EKostApi\obj\Debug\net7.0\refint\EKostApi.dll
 D:\ASP API\EKostApi\obj\Debug\net7.0\EKostApi.pdb
 D:\ASP API\EKostApi\obj\Debug\net7.0\EKostApi.genruntimeconfig.cache
 D:\ASP API\EKostApi\obj\Debug\net7.0\ref\EKostApi.dll
+D:\ASP API\EKostApi\bin\Debug\net7.0\BCrypt.Net-Next.dll
+D:\ASP API\EKostApi\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+D:\ASP API\EKostApi\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\ASP API\EKostApi\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+D:\ASP API\EKostApi\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+D:\ASP API\EKostApi\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

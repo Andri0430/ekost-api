@@ -1,5 +1,6 @@
 using EKostApi.Data;
 using EKostApi.Interface;
+using EKostApi.Repository;
 using EKostApi.Service;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,8 +18,10 @@ builder.Services.AddDbContext<EkostContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
 
-builder.Services.AddScoped<IOwner, OwnerService>();
-builder.Services.AddScoped<IUser, UserService>();
+builder.Services.AddScoped<IOwner, OwnerRepo>();
+builder.Services.AddScoped<IUser, UserRepo>();
+builder.Services.AddScoped<IKostType, KostTypeRepo>();
+builder.Services.AddScoped<IKost, KostRepository>();
 
 var app = builder.Build();
 
