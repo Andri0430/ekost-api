@@ -18,10 +18,10 @@ builder.Services.AddDbContext<EkostContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
 
-builder.Services.AddScoped<IOwner, OwnerRepo>();
-builder.Services.AddScoped<IUser, UserRepo>();
+builder.Services.AddScoped<IAccount, AccountRepo>();
+builder.Services.AddScoped<IRole, RoleRepo>();
 builder.Services.AddScoped<IKostType, KostTypeRepo>();
-builder.Services.AddScoped<IKost, KostRepository>();
+builder.Services.AddScoped<IKost, KostRepo>();
 
 var app = builder.Build();
 

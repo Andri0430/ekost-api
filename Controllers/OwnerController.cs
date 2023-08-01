@@ -1,11 +1,5 @@
-﻿using EKostApi.Dto;
-using EKostApi.Interface;
-using EKostApi.Models;
+﻿using EKostApi.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace EKostApi.Controllers
 {
@@ -13,113 +7,46 @@ namespace EKostApi.Controllers
     [ApiController]
     public class OwnerController : ControllerBase
     {
-        private readonly IOwner _ownerService;
-        private readonly IConfiguration _configuration;
+        private readonly IAccount _accountService;
+        private readonly IRole _roleService;
 
-        public OwnerController(IOwner ownerService, IConfiguration configuration)
+        public OwnerController(IAccount accountService, IRole roleService)
         {
-            _ownerService = ownerService;
-            _configuration = configuration;
+            _accountService = accountService;
+            _roleService = roleService;
+        }
+
+        [HttpGet]
+        public IActionResult GetAllOwners()
+        {
+            return Ok(_accountService.GetAllAccounts(1));
         }
 
         [HttpGet("get-by-username")]
-        public IActionResult GetOwnerByUsername(string username)
+        public IActionResult GetOwnerByUsername(string usernama)
         {
-            var usernameOnwer = _ownerService.GetOwnerByUsername(username);
+            var owner = _accountService.GetAccountByUsername(usernama,1);
 
-            if(usernameOnwer == null) return NotFound("Username Tidak Ditemukan");
-            return Ok(usernameOnwer);
+            if (owner == null) return NotFound("Username Tidak Ditemukan");
+            return Ok(owner);
         }
 
-        [HttpPost("Register")]
-        public IActionResult Register(RegisterDto registerDto)
+        [HttpGet("get-by-email")]
+        public IActionResult GetOwnerByEmail(string usernama)
         {
-            var username = _ownerService.GetOwnerByUsername(registerDto.Username);
-            var email = _ownerService.GetOwnerByEmail(registerDto.Email);
-            var phone = _ownerService.GetOwnerByPhoneNumber(registerDto.PhoneNumber);
+            var owner = _accountService.GetAccountByEmail(usernama,1);
 
-            if (username != null)
-            {
-                return BadRequest("Username sudah digunakan");
-            }
-            else if (email != null)
-            {
-                return BadRequest("Email sudah digunakan");
-            }
-            else if (phone != null)
-            {
-                return BadRequest("Phone sudah digunakan");
-            }
-            else
-            {
-                string saltPassword = BCrypt.Net.BCrypt.GenerateSalt();
-                string hashPassword = BCrypt.Net.BCrypt.HashPassword(registerDto.Password, saltPassword);
-
-                var createOwner = new DetailOwner
-                {
-                    OwnerAccount = new OwnerAccount
-                    {
-                        Username = registerDto.Username,
-                        Password = hashPassword
-                    },
-                    Owner = new Owner
-                    {
-                        Name = registerDto.Name,
-                        Email = registerDto.Email,
-                        PhoneNumber = registerDto.PhoneNumber
-                    }
-                };
-                _ownerService.RegisterOwner(createOwner);
-                return Ok("Register Berhasil");
-            }
+            if (owner == null) return NotFound("Username Tidak Ditemukan");
+            return Ok(owner);
         }
 
-        [HttpPost("Login")]
-        public IActionResult Login(LoginDto loginDto)
+        [HttpGet("get-by-phone")]
+        public IActionResult GetOwnerByPhone(string phone)
         {
-            var checkAccount = _ownerService.GetAccountOwnerByUsername(loginDto.Password);
+            var owner = _accountService.GetAccountByPhoneNumber(phone,1);
 
-            if (checkAccount == null)
-            {
-                return BadRequest("Account Not Found");
-            }
-            else
-            {
-                if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, checkAccount.Password))
-                {
-                    return BadRequest("Wrong Password");
-                }
-
-                string token = CreateToken(checkAccount);
-
-                return Ok(token);
-            }
-        }
-
-        private string CreateToken(OwnerAccount ownerAccount)
-        {
-            var owner = _ownerService.GetOwnerByUsername(ownerAccount.Username);
-
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, owner.Name),
-                new Claim(ClaimTypes.Email, owner.Email),
-                new Claim(ClaimTypes.MobilePhone, owner.PhoneNumber)
-            };
-
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
-
-            var credential = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(5),
-                    signingCredentials: credential
-                    );
-
-            var sendToken = new JwtSecurityTokenHandler().WriteToken(token);
-            return sendToken;
+            if (owner == null) return NotFound("Username Tidak Ditemukan");
+            return Ok(owner);
         }
     }
 }

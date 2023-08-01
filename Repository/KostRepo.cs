@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EKostApi.Repository
 {
-    public class KostRepository : IKost
+    public class KostRepo : IKost
     {
         private readonly EkostContext _context;
-        public KostRepository(EkostContext context)
+        public KostRepo(EkostContext context)
         {
             _context = context;
         }

@@ -9,7 +9,7 @@ namespace EKostApi.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public Kost Kost { get; set; }
-        public Owner Owner { get; set; }
+        public Account Account { get; set; }
         public int QtyRoom { get; set; }
     }
 }

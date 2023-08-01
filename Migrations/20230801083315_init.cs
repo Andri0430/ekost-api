@@ -46,60 +46,16 @@ namespace EKostApi.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "OwnerAccounts",
-                columns: table => new
-                {
-                    Username = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Password = table.Column<string>(type: "longtext", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OwnerAccounts", x => x.Username);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Owners",
+                name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    Email = table.Column<string>(type: "longtext", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "longtext", nullable: false)
+                    RoleName = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Owners", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "UserAccounts",
-                columns: table => new
-                {
-                    Username = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Password = table.Column<string>(type: "longtext", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAccounts", x => x.Username);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    Email = table.Column<string>(type: "longtext", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "longtext", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -133,56 +89,44 @@ namespace EKostApi.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DetailOwners",
+                name: "Accounts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    OwnerAccountUsername = table.Column<string>(type: "varchar(255)", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false)
+                    Username = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Password = table.Column<string>(type: "longtext", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DetailOwners", x => x.Id);
+                    table.PrimaryKey("PK_Accounts", x => x.Username);
                     table.ForeignKey(
-                        name: "FK_DetailOwners_OwnerAccounts_OwnerAccountUsername",
-                        column: x => x.OwnerAccountUsername,
-                        principalTable: "OwnerAccounts",
-                        principalColumn: "Username",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DetailOwners_Owners_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owners",
+                        name: "FK_Accounts_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DetailUsers",
+                name: "DetailAccount",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserAccountUsername = table.Column<string>(type: "varchar(255)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    Email = table.Column<string>(type: "longtext", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: false),
+                    AccountUsername = table.Column<string>(type: "varchar(255)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DetailUsers", x => x.Id);
+                    table.PrimaryKey("PK_DetailAccount", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DetailUsers_UserAccounts_UserAccountUsername",
-                        column: x => x.UserAccountUsername,
-                        principalTable: "UserAccounts",
-                        principalColumn: "Username",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DetailUsers_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_DetailAccount_Accounts_AccountUsername",
+                        column: x => x.AccountUsername,
+                        principalTable: "Accounts",
+                        principalColumn: "Username");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -193,56 +137,45 @@ namespace EKostApi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     KostId = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    AccountUsername = table.Column<string>(type: "varchar(255)", nullable: true),
                     QtyRoom = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DetailKosts", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_DetailKosts_Accounts_AccountUsername",
+                        column: x => x.AccountUsername,
+                        principalTable: "Accounts",
+                        principalColumn: "Username");
+                    table.ForeignKey(
                         name: "FK_DetailKosts_Kost_KostId",
                         column: x => x.KostId,
                         principalTable: "Kost",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DetailKosts_Owners_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Accounts_RoleId",
+                table: "Accounts",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetailAccount_AccountUsername",
+                table: "DetailAccount",
+                column: "AccountUsername");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetailKosts_AccountUsername",
+                table: "DetailKosts",
+                column: "AccountUsername");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DetailKosts_KostId",
                 table: "DetailKosts",
                 column: "KostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DetailKosts_OwnerId",
-                table: "DetailKosts",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DetailOwners_OwnerAccountUsername",
-                table: "DetailOwners",
-                column: "OwnerAccountUsername");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DetailOwners_OwnerId",
-                table: "DetailOwners",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DetailUsers_UserAccountUsername",
-                table: "DetailUsers",
-                column: "UserAccountUsername");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DetailUsers_UserId",
-                table: "DetailUsers",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Kost_KostAdressId",
@@ -259,28 +192,19 @@ namespace EKostApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "DetailAccount");
+
+            migrationBuilder.DropTable(
                 name: "DetailKosts");
 
             migrationBuilder.DropTable(
-                name: "DetailOwners");
-
-            migrationBuilder.DropTable(
-                name: "DetailUsers");
+                name: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "Kost");
 
             migrationBuilder.DropTable(
-                name: "OwnerAccounts");
-
-            migrationBuilder.DropTable(
-                name: "Owners");
-
-            migrationBuilder.DropTable(
-                name: "UserAccounts");
-
-            migrationBuilder.DropTable(
-                name: "Users");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "KostAdress");
